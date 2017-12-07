@@ -1,0 +1,22 @@
+TCNTn Register - Stores the register value.(x - Register No.)
+
+TOVn Flag - Sets when overflow happens.
+
+TCCRn - Setting modes of operation
+CS02:CS00 Timer clock Source
+76543210
+00000001
+
+OCRn - Output Compare Register - Values are compared against TCNTn register.
+
+OCFn - flag will be set when output OCRn matches TCNTn
+
+TIFR - TOV0 0th Bit - 
+TOV0
+OCF0
+TOV1
+OCF1B
+OCF1A
+ICF1
+TOV2
+OCF2
