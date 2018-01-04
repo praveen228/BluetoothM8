@@ -3,29 +3,29 @@ TestEmbeddedProject.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00000132  000001c6  2**0
+  0 .data         00000000  00800100  000001cc  00000260  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000132  00000000  00000000  00000094  2**1
+  1 .text         000001cc  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000082  00800100  00800100  000001c6  2**0
+  2 .bss          00000086  00800100  00800100  00000260  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000001c6  2**0
+  3 .comment      00000030  00000000  00000000  00000260  2**0
                   CONTENTS, READONLY
-  4 .debug_aranges 00000038  00000000  00000000  000001f6  2**0
+  4 .debug_aranges 00000038  00000000  00000000  00000290  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000017b  00000000  00000000  0000022e  2**0
+  5 .debug_info   00000263  00000000  00000000  000002c8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000000c2  00000000  00000000  000003a9  2**0
+  6 .debug_abbrev 00000131  00000000  00000000  0000052b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000106  00000000  00000000  0000046b  2**0
+  7 .debug_line   000001af  00000000  00000000  0000065c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000074  00000000  00000000  00000574  2**2
+  8 .debug_frame  00000074  00000000  00000000  0000080c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000196  00000000  00000000  000005e8  2**0
+  9 .debug_str    00000216  00000000  00000000  00000880  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000000cf  00000000  00000000  0000077e  2**0
+ 10 .debug_loc    00000135  00000000  00000000  00000a96  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000028  00000000  00000000  0000084d  2**0
+ 11 .debug_ranges 00000028  00000000  00000000  00000bcb  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -49,7 +49,7 @@ Disassembly of section .text:
   3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   44:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  48:	0c 94 75 00 	jmp	0xea	; 0xea <__vector_18>
+  48:	0c 94 c2 00 	jmp	0x184	; 0x184 <__vector_18>
   4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   54:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -76,11 +76,11 @@ Disassembly of section .text:
   7c:	1d 92       	st	X+, r1
 
 0000007e <.do_clear_bss_start>:
-  7e:	a2 38       	cpi	r26, 0x82	; 130
+  7e:	a6 38       	cpi	r26, 0x86	; 134
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
-  84:	0e 94 5d 00 	call	0xba	; 0xba <main>
-  88:	0c 94 97 00 	jmp	0x12e	; 0x12e <_exit>
+  84:	0e 94 67 00 	call	0xce	; 0xce <main>
+  88:	0c 94 e4 00 	jmp	0x1c8	; 0x1c8 <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -95,142 +95,245 @@ char getChar(void){
   90:	90 91 01 01 	lds	r25, 0x0101
   94:	80 91 00 01 	lds	r24, 0x0100
   98:	98 17       	cp	r25, r24
-  9a:	69 f0       	breq	.+26     	; 0xb6 <getChar+0x26>
+  9a:	b9 f0       	breq	.+46     	; 0xca <getChar+0x3a>
 		ret = rxBuffer[rxReadPos];
   9c:	e9 2f       	mov	r30, r25
   9e:	f0 e0       	ldi	r31, 0x00	; 0
-  a0:	ee 5f       	subi	r30, 0xFE	; 254
+  a0:	ea 5f       	subi	r30, 0xFA	; 250
   a2:	fe 4f       	sbci	r31, 0xFE	; 254
   a4:	80 81       	ld	r24, Z
 		rxReadPos++;
   a6:	9f 5f       	subi	r25, 0xFF	; 255
+  a8:	90 93 01 01 	sts	0x0101, r25
+		state_change++;
+  ac:	20 91 02 01 	lds	r18, 0x0102
+  b0:	30 91 03 01 	lds	r19, 0x0103
+  b4:	2f 5f       	subi	r18, 0xFF	; 255
+  b6:	3f 4f       	sbci	r19, 0xFF	; 255
+  b8:	30 93 03 01 	sts	0x0103, r19
+  bc:	20 93 02 01 	sts	0x0102, r18
 		if (rxReadPos >= RX_BUFFER_SIZE)
-  a8:	1a f0       	brmi	.+6      	; 0xb0 <getChar+0x20>
-}
-char getChar(void){
-	char ret = '\0';
-	if (rxReadPos != rxWritePos){
-		ret = rxBuffer[rxReadPos];
-		rxReadPos++;
-  aa:	90 93 01 01 	sts	0x0101, r25
-  ae:	08 95       	ret
-		if (rxReadPos >= RX_BUFFER_SIZE)
+  c0:	99 23       	and	r25, r25
+  c2:	24 f4       	brge	.+8      	; 0xcc <getChar+0x3c>
 		{
 			rxReadPos = 0;
-  b0:	10 92 01 01 	sts	0x0101, r1
-  b4:	08 95       	ret
+  c4:	10 92 01 01 	sts	0x0101, r1
+  c8:	08 95       	ret
 		ret = rxBuffer[rxReadPos];
 	}
 	return ret;
 }
 char getChar(void){
 	char ret = '\0';
-  b6:	80 e0       	ldi	r24, 0x00	; 0
+  ca:	80 e0       	ldi	r24, 0x00	; 0
 		{
 			rxReadPos = 0;
 		}
 	}
 	return ret;
 }
-  b8:	08 95       	ret
+  cc:	08 95       	ret
 
-000000ba <main>:
+000000ce <main>:
 
 char getChar(void);
 char peekChar(void);
-
 int main (void){
+	
 	UBRR0H = (BRC>>8);
-  ba:	10 92 c5 00 	sts	0x00C5, r1
+  ce:	10 92 c5 00 	sts	0x00C5, r1
 	UBRR0L = BRC;
-  be:	87 e6       	ldi	r24, 0x67	; 103
-  c0:	80 93 c4 00 	sts	0x00C4, r24
+  d2:	87 e6       	ldi	r24, 0x67	; 103
+  d4:	80 93 c4 00 	sts	0x00C4, r24
 	
 	UCSR0B = (1 << RXEN0) | (1 << RXCIE0);
-  c4:	80 e9       	ldi	r24, 0x90	; 144
-  c6:	80 93 c1 00 	sts	0x00C1, r24
+  d8:	80 e9       	ldi	r24, 0x90	; 144
+  da:	80 93 c1 00 	sts	0x00C1, r24
 	UCSR0C = (1 << UCSZ01)| (1 << UCSZ00);
-  ca:	86 e0       	ldi	r24, 0x06	; 6
-  cc:	80 93 c2 00 	sts	0x00C2, r24
+  de:	86 e0       	ldi	r24, 0x06	; 6
+  e0:	80 93 c2 00 	sts	0x00C2, r24
 	
 	DDRB = (1<<PORTB5);
-  d0:	80 e2       	ldi	r24, 0x20	; 32
-  d2:	84 b9       	out	0x04, r24	; 4
+  e4:	80 e2       	ldi	r24, 0x20	; 32
+  e6:	84 b9       	out	0x04, r24	; 4
 	
 	sei();
-  d4:	78 94       	sei
+  e8:	78 94       	sei
+	p_state = INIT;
+  ea:	10 92 04 01 	sts	0x0104, r1
+	n_state =INIT;
+  ee:	10 92 05 01 	sts	0x0105, r1
+					n_state = START;
+				}else{
+					n_state=INIT;}
+				break;
+			case START: 
+				if (c=='2')	{n_state = INTER;}
+  f2:	12 e0       	ldi	r17, 0x02	; 2
+			switch (p_state)
+			{
+			case INIT:
+				cbi(PORTB,PORTB5);
+				if (c=='1'){
+					n_state = START;
+  f4:	d1 e0       	ldi	r29, 0x01	; 1
+			case START: 
+				if (c=='2')	{n_state = INTER;}
+				else {n_state = INIT;}
+				break;
+			case INTER: 
+				if (c=='3')	{n_state = END;}
+  f6:	c3 e0       	ldi	r28, 0x03	; 3
+	sei();
+	p_state = INIT;
+	n_state =INIT;
 	
 	while (1)	{
 		char c = getChar();
-  d6:	0e 94 48 00 	call	0x90	; 0x90 <getChar>
-		if(c == '1'){
-  da:	81 33       	cpi	r24, 0x31	; 49
-  dc:	11 f4       	brne	.+4      	; 0xe2 <main+0x28>
-			sbi(PORTB, PORTB5);
-  de:	2d 9a       	sbi	0x05, 5	; 5
-  e0:	fa cf       	rjmp	.-12     	; 0xd6 <main+0x1c>
-		}
-		else if (c == '0')
-  e2:	80 33       	cpi	r24, 0x30	; 48
-  e4:	c1 f7       	brne	.-16     	; 0xd6 <main+0x1c>
-		{
-			cbi(PORTB,PORTB5);
-  e6:	2d 98       	cbi	0x05, 5	; 5
-  e8:	f6 cf       	rjmp	.-20     	; 0xd6 <main+0x1c>
+  f8:	0e 94 48 00 	call	0x90	; 0x90 <getChar>
+		if (state_change!=0){
+  fc:	20 91 02 01 	lds	r18, 0x0102
+ 100:	30 91 03 01 	lds	r19, 0x0103
+ 104:	23 2b       	or	r18, r19
+ 106:	c1 f3       	breq	.-16     	; 0xf8 <main+0x2a>
+			switch (p_state)
+ 108:	90 91 04 01 	lds	r25, 0x0104
+ 10c:	91 30       	cpi	r25, 0x01	; 1
+ 10e:	79 f0       	breq	.+30     	; 0x12e <main+0x60>
+ 110:	28 f0       	brcs	.+10     	; 0x11c <main+0x4e>
+ 112:	92 30       	cpi	r25, 0x02	; 2
+ 114:	a1 f0       	breq	.+40     	; 0x13e <main+0x70>
+ 116:	93 30       	cpi	r25, 0x03	; 3
+ 118:	d1 f0       	breq	.+52     	; 0x14e <main+0x80>
+ 11a:	2b c0       	rjmp	.+86     	; 0x172 <main+0xa4>
+			{
+			case INIT:
+				cbi(PORTB,PORTB5);
+ 11c:	2d 98       	cbi	0x05, 5	; 5
+				if (c=='1'){
+ 11e:	81 33       	cpi	r24, 0x31	; 49
+ 120:	19 f4       	brne	.+6      	; 0x128 <main+0x5a>
+					n_state = START;
+ 122:	d0 93 05 01 	sts	0x0105, r29
+ 126:	25 c0       	rjmp	.+74     	; 0x172 <main+0xa4>
+				}else{
+					n_state=INIT;}
+ 128:	10 92 05 01 	sts	0x0105, r1
+ 12c:	22 c0       	rjmp	.+68     	; 0x172 <main+0xa4>
+				break;
+			case START: 
+				if (c=='2')	{n_state = INTER;}
+ 12e:	82 33       	cpi	r24, 0x32	; 50
+ 130:	19 f4       	brne	.+6      	; 0x138 <main+0x6a>
+ 132:	10 93 05 01 	sts	0x0105, r17
+ 136:	1d c0       	rjmp	.+58     	; 0x172 <main+0xa4>
+				else {n_state = INIT;}
+ 138:	10 92 05 01 	sts	0x0105, r1
+ 13c:	1a c0       	rjmp	.+52     	; 0x172 <main+0xa4>
+				break;
+			case INTER: 
+				if (c=='3')	{n_state = END;}
+ 13e:	83 33       	cpi	r24, 0x33	; 51
+ 140:	19 f4       	brne	.+6      	; 0x148 <main+0x7a>
+ 142:	c0 93 05 01 	sts	0x0105, r28
+ 146:	15 c0       	rjmp	.+42     	; 0x172 <main+0xa4>
+				else {n_state = INIT;}
+ 148:	10 92 05 01 	sts	0x0105, r1
+ 14c:	12 c0       	rjmp	.+36     	; 0x172 <main+0xa4>
+				break;
+			case END: 
+				if (c=='4'){
+ 14e:	84 33       	cpi	r24, 0x34	; 52
+ 150:	71 f4       	brne	.+28     	; 0x16e <main+0xa0>
+					n_state = INIT;
+ 152:	10 92 05 01 	sts	0x0105, r1
+					sbi(PORTB,PORTB5);
+ 156:	2d 9a       	sbi	0x05, 5	; 5
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
 
-000000ea <__vector_18>:
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 158:	2f ed       	ldi	r18, 0xDF	; 223
+ 15a:	83 e9       	ldi	r24, 0x93	; 147
+ 15c:	94 e0       	ldi	r25, 0x04	; 4
+ 15e:	21 50       	subi	r18, 0x01	; 1
+ 160:	80 40       	sbci	r24, 0x00	; 0
+ 162:	90 40       	sbci	r25, 0x00	; 0
+ 164:	e1 f7       	brne	.-8      	; 0x15e <main+0x90>
+ 166:	00 c0       	rjmp	.+0      	; 0x168 <main+0x9a>
+ 168:	00 00       	nop
+					_delay_ms(1500);
+					cbi(PORTB,PORTB5);
+ 16a:	2d 98       	cbi	0x05, 5	; 5
+ 16c:	02 c0       	rjmp	.+4      	; 0x172 <main+0xa4>
+				}else{
+				n_state =INIT;}
+ 16e:	10 92 05 01 	sts	0x0105, r1
+				break;
+			}
+			p_state = n_state;
+ 172:	80 91 05 01 	lds	r24, 0x0105
+ 176:	80 93 04 01 	sts	0x0104, r24
+			state_change = 0;
+ 17a:	10 92 03 01 	sts	0x0103, r1
+ 17e:	10 92 02 01 	sts	0x0102, r1
+ 182:	ba cf       	rjmp	.-140    	; 0xf8 <main+0x2a>
+
+00000184 <__vector_18>:
 			rxReadPos = 0;
 		}
 	}
 	return ret;
 }
 ISR(USART_RX_vect){
-  ea:	1f 92       	push	r1
-  ec:	0f 92       	push	r0
-  ee:	0f b6       	in	r0, 0x3f	; 63
-  f0:	0f 92       	push	r0
-  f2:	11 24       	eor	r1, r1
-  f4:	8f 93       	push	r24
-  f6:	9f 93       	push	r25
-  f8:	ef 93       	push	r30
-  fa:	ff 93       	push	r31
+ 184:	1f 92       	push	r1
+ 186:	0f 92       	push	r0
+ 188:	0f b6       	in	r0, 0x3f	; 63
+ 18a:	0f 92       	push	r0
+ 18c:	11 24       	eor	r1, r1
+ 18e:	8f 93       	push	r24
+ 190:	9f 93       	push	r25
+ 192:	ef 93       	push	r30
+ 194:	ff 93       	push	r31
 	rxBuffer[rxWritePos] = UDR0;
-  fc:	80 91 00 01 	lds	r24, 0x0100
- 100:	90 91 c6 00 	lds	r25, 0x00C6
- 104:	e8 2f       	mov	r30, r24
- 106:	f0 e0       	ldi	r31, 0x00	; 0
- 108:	ee 5f       	subi	r30, 0xFE	; 254
- 10a:	fe 4f       	sbci	r31, 0xFE	; 254
- 10c:	90 83       	st	Z, r25
+ 196:	80 91 00 01 	lds	r24, 0x0100
+ 19a:	90 91 c6 00 	lds	r25, 0x00C6
+ 19e:	e8 2f       	mov	r30, r24
+ 1a0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a2:	ea 5f       	subi	r30, 0xFA	; 250
+ 1a4:	fe 4f       	sbci	r31, 0xFE	; 254
+ 1a6:	90 83       	st	Z, r25
 	rxWritePos++;
- 10e:	8f 5f       	subi	r24, 0xFF	; 255
+ 1a8:	8f 5f       	subi	r24, 0xFF	; 255
 	if (rxWritePos >= RX_BUFFER_SIZE)
- 110:	1a f0       	brmi	.+6      	; 0x118 <__vector_18+0x2e>
+ 1aa:	1a f0       	brmi	.+6      	; 0x1b2 <__vector_18+0x2e>
 	}
 	return ret;
 }
 ISR(USART_RX_vect){
 	rxBuffer[rxWritePos] = UDR0;
 	rxWritePos++;
- 112:	80 93 00 01 	sts	0x0100, r24
- 116:	02 c0       	rjmp	.+4      	; 0x11c <__vector_18+0x32>
+ 1ac:	80 93 00 01 	sts	0x0100, r24
+ 1b0:	02 c0       	rjmp	.+4      	; 0x1b6 <__vector_18+0x32>
 	if (rxWritePos >= RX_BUFFER_SIZE)
 	{
 		rxWritePos = 0;
- 118:	10 92 00 01 	sts	0x0100, r1
+ 1b2:	10 92 00 01 	sts	0x0100, r1
 	}
- 11c:	ff 91       	pop	r31
- 11e:	ef 91       	pop	r30
- 120:	9f 91       	pop	r25
- 122:	8f 91       	pop	r24
- 124:	0f 90       	pop	r0
- 126:	0f be       	out	0x3f, r0	; 63
- 128:	0f 90       	pop	r0
- 12a:	1f 90       	pop	r1
- 12c:	18 95       	reti
+ 1b6:	ff 91       	pop	r31
+ 1b8:	ef 91       	pop	r30
+ 1ba:	9f 91       	pop	r25
+ 1bc:	8f 91       	pop	r24
+ 1be:	0f 90       	pop	r0
+ 1c0:	0f be       	out	0x3f, r0	; 63
+ 1c2:	0f 90       	pop	r0
+ 1c4:	1f 90       	pop	r1
+ 1c6:	18 95       	reti
 
-0000012e <_exit>:
- 12e:	f8 94       	cli
+000001c8 <_exit>:
+ 1c8:	f8 94       	cli
 
-00000130 <__stop_program>:
- 130:	ff cf       	rjmp	.-2      	; 0x130 <__stop_program>
+000001ca <__stop_program>:
+ 1ca:	ff cf       	rjmp	.-2      	; 0x1ca <__stop_program>
