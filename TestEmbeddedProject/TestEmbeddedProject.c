@@ -4,7 +4,7 @@
 
 #define  cbi(SFR, BIT) (_SFR_BYTE(SFR) &= ~ _BV(BIT))
 #define  sbi(SFR, BIT) (_SFR_BYTE(SFR) |=   _BV(BIT))
-
+//BaudRate of HC-05 defaulting at 38400 -
 #define F_CPU 16000000
 #define RX_BUFFER_SIZE 128
 #define BAUD 38400
